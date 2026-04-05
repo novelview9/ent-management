@@ -97,6 +97,20 @@ CREATE TABLE IF NOT EXISTS coverage (
   last_date TEXT
 );
 
+-- 7. 스케줄
+CREATE TABLE IF NOT EXISTS schedule (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  channel_id INTEGER REFERENCES channels(id),
+  type TEXT,
+  title TEXT NOT NULL,
+  date TEXT NOT NULL,
+  time TEXT,
+  location TEXT,
+  status TEXT DEFAULT '예정' CHECK(status IN ('예정','확정','완료','취소')),
+  note TEXT,
+  created_at TEXT DEFAULT (datetime('now'))
+);
+
 -- 인덱스
 CREATE INDEX IF NOT EXISTS idx_channels_status ON channels(status);
 CREATE INDEX IF NOT EXISTS idx_channels_cat ON channels(cat);

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>윤담백 팟캐스트 현황</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,sans-serif;background:#f8f9fa;color:#222;line-height:1.6}
+header{background:#fff;padding:20px 16px;border-bottom:1px solid #e0e0e0;text-align:center}
+header h1{font-size:18px;font-weight:700}
+header p{font-size:12px;color:#888;margin-top:2px}
+.wrap{max-width:800px;margin:0 auto;padding:16px}
+h2{font-size:15px;font-weight:700;margin:24px 0 12px;padding-bottom:6px;border-bottom:2px solid #222}
+.pipeline{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.pipe-item{flex:1;min-width:80px;background:#fff;border-radius:10px;padding:14px;text-align:center;border:1px solid #eee}
+.pipe-item .num{font-size:24px;font-weight:700}
+.pipe-item .label{font-size:11px;color:#888}
+.pipe-item.active{border-color:#2e7d32;background:#e8f5e9}
+.cov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-bottom:20px}
+.cov-item{display:flex;align-items:center;gap:6px;font-size:12px}
+.cov-label{width:45px;color:#555}
+.cov-bar{flex:1;height:5px;background:#eee;border-radius:3px;overflow:hidden}
+.cov-fill{height:100%;border-radius:3px}
+.cov-pct{width:30px;text-align:right;color:#888;font-size:11px}
+table{width:100%;border-collapse:collapse;font-size:13px;background:#fff;border-radius:10px;overflow:hidden}
+th{text-align:left;padding:8px 10px;font-size:11px;color:#888;border-bottom:2px solid #eee}
+td{padding:8px 10px;border-bottom:1px solid #f5f5f5}
+tr.cat-header{background:#f8f9fa}
+tr.cat-header td{padding:10px;font-size:13px}
+.cnt{color:#888;font-weight:400;font-size:12px}
+td a{color:#111;text-decoration:none;font-weight:600}
+td a:hover{color:#1565c0}
+.sub{color:#999;font-size:11px}
+.diff{font-size:10px;padding:2px 6px;border-radius:3px;font-weight:600}
+.easy{background:#e8f5e9;color:#2e7d32}.mid{background:#fff3e0;color:#e65100}.hard{background:#fce4ec;color:#c62828}
+.status{font-size:10px;padding:2px 6px;border-radius:3px;font-weight:600}
+.s-후보{background:#e3f2fd;color:#1565c0}.s-컨택중{background:#fff3e0;color:#e65100}
+.s-응답{background:#e8f5e9;color:#2e7d32}.s-확정{background:#2e7d32;color:#fff}
+.s-보류{background:#f5f5f5;color:#999}.s-예정{background:#e3f2fd;color:#1565c0}
+tr.confirmed{background:#f1f8e9}tr.responded{background:#fff8e1}tr.contacting{background:#fff3e0}
+.sch-item{background:#fff;border-radius:8px;padding:12px;margin-bottom:8px;border:1px solid #eee}
+.sch-confirmed{border-left:3px solid #2e7d32}
+.sch-date{font-size:12px;color:#888;font-weight:600}
+.sch-title{font-size:14px;font-weight:600;margin:2px 0}
+.sch-meta{font-size:12px;color:#999}
+.empty{text-align:center;color:#aaa;padding:20px;font-size:13px}
+footer{text-align:center;padding:24px;font-size:11px;color:#bbb}
+@media(max-width:600px){.pipeline{gap:6px}.pipe-item{padding:10px}.pipe-item .num{font-size:20px}}
+</style>
+</head>
+<body>
+<header>
+  <h1>윤담백 팟캐스트 현황</h1>
+  <p>2026-04-05 기준 · 총 35개 채널</p>
+</header>
+<div class="wrap">
+
+<h2>진행 현황</h2>
+<div class="pipeline">
+  <div class="pipe-item"><div class="num">35</div><div class="label">후보</div></div>
+  <div class="pipe-item"><div class="num">0</div><div class="label">컨택중</div></div>
+  <div class="pipe-item"><div class="num">0</div><div class="label">응답</div></div>
+  <div class="pipe-item"><div class="num">0</div><div class="label">확정</div></div>
+</div>
+
+<h2>스케줄</h2>
+<p class="empty">아직 예정된 스케줄 없음</p>
+
+<h2>리서치 커버리지</h2>
+<div class="cov-grid"><div class="cov-item"><span class="cov-label">기타</span><div class="cov-bar"><div class="cov-fill" style="width:15%;background:#ef5350"></div></div><span class="cov-pct">15%</span></div><div class="cov-item"><span class="cov-label">라이프</span><div class="cov-bar"><div class="cov-fill" style="width:20%;background:#ef5350"></div></div><span class="cov-pct">20%</span></div><div class="cov-item"><span class="cov-label">스트릿</span><div class="cov-bar"><div class="cov-fill" style="width:30%;background:#ff9800"></div></div><span class="cov-pct">30%</span></div><div class="cov-item"><span class="cov-label">코미디</span><div class="cov-bar"><div class="cov-fill" style="width:50%;background:#ff9800"></div></div><span class="cov-pct">50%</span></div><div class="cov-item"><span class="cov-label">인터뷰</span><div class="cov-bar"><div class="cov-fill" style="width:50%;background:#ff9800"></div></div><span class="cov-pct">50%</span></div><div class="cov-item"><span class="cov-label">힙합</span><div class="cov-bar"><div class="cov-fill" style="width:60%;background:#4caf50"></div></div><span class="cov-pct">60%</span></div><div class="cov-item"><span class="cov-label">연애</span><div class="cov-bar"><div class="cov-fill" style="width:60%;background:#4caf50"></div></div><span class="cov-pct">60%</span></div><div class="cov-item"><span class="cov-label">패션</span><div class="cov-bar"><div class="cov-fill" style="width:70%;background:#4caf50"></div></div><span class="cov-pct">70%</span></div></div>
+
+<h2>채널 리스트</h2>
+<table>
+<thead><tr><th>채널</th><th>구독자</th><th>난이도</th><th>상태</th><th>메모</th></tr></thead>
+<tbody><tr class="cat-header"><td colspan="5"><strong>패션</strong> <span class="cnt">6개</span></td></tr><tr class="">
+      <td><a href="https://youtube.com/@HOWABOUTOOTD" target="_blank">HOW ABOUT OOTD</a><br><span class="sub">@HOWABOUTOOTD</span></td>
+      <td>8.29만</td>
+      <td><span class="diff mid">중간</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">스타일리스트 운영. 콜라보 활발</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@남자패션" target="_blank">테이스터 션 테토</a><br><span class="sub">@남자패션</span></td>
+      <td>7.19만</td>
+      <td><span class="diff mid">중간</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">남자 패션 토크 팟캐스트</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@oncuration" target="_blank">온큐레이션 온담패설</a><br><span class="sub">@oncuration</span></td>
+      <td>1.7만</td>
+      <td><span class="diff mid">중간</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">패션 매거진 기반 팟캐스트</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@윤대리" target="_blank">패션회사 윤대리</a><br><span class="sub">@윤대리</span></td>
+      <td>2.32만</td>
+      <td><span class="diff mid">중간</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">현직 패션 MD 콜라보</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@lighthousestore" target="_blank">라이트하우스 스토어</a><br><span class="sub">@lighthousestore</span></td>
+      <td>2.46K</td>
+      <td><span class="diff easy">쉬움</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">애장품 게스트 시리즈 신규</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@momohwang" target="_blank">momo hwang</a><br><span class="sub">@momohwang</span></td>
+      <td>3.78K</td>
+      <td><span class="diff easy">쉬움</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">글로벌 패션 문화 라디오</td>
+    </tr><tr class="cat-header"><td colspan="5"><strong>힙합</strong> <span class="cnt">4개</span></td></tr><tr class="">
+      <td><a href="https://youtube.com/@alexalexalex_ch" target="_blank">알렉스알렉스알렉스</a><br><span class="sub">@alexalexalex_ch</span></td>
+      <td>2.03만</td>
+      <td><span class="diff mid">중간</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">영어 인터뷰. 래퍼/크리에이터</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@김건" target="_blank">김건 건캐스트</a><br><span class="sub">@김건</span></td>
+      <td>1.23만</td>
+      <td><span class="diff easy">쉬움</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">홍대 래퍼 초대 신규 런칭</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@sksmsdudzpdl" target="_blank">공케이 0번 버스</a><br><span class="sub">@sksmsdudzpdl</span></td>
+      <td>15.3만</td>
+      <td><span class="diff mid">중간</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">뮤지션 게스트 토크</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@KimsInnpodcasts" target="_blank">김씨네 여인숙</a><br><span class="sub">@KimsInnpodcasts</span></td>
+      <td>816</td>
+      <td><span class="diff easy">쉬움</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">음악산업 종사자 인터뷰</td>
+    </tr><tr class="cat-header"><td colspan="5"><strong>코미디</strong> <span class="cnt">6개</span></td></tr><tr class="">
+      <td><a href="https://youtube.com/@CharlesEnter" target="_blank">찰스엔터 찰수다</a><br><span class="sub">@CharlesEnter</span></td>
+      <td>104만</td>
+      <td><span class="diff hard">높음</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">이영지, 바비 등 게스트 토크</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@B급studio" target="_blank">B급 스튜디오 B급 청문회</a><br><span class="sub">@B급studio</span></td>
+      <td>46.9만</td>
+      <td><span class="diff hard">높음</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">증인 심문 형식 게스트 토크쇼</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@americanjoke0" target="_blank">미국식농담</a><br><span class="sub">@americanjoke0</span></td>
+      <td>4.68K</td>
+      <td><span class="diff easy">쉬움</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">스탠드업 코미디 팟캐. 176회 장수</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@뜨거운삼각형" target="_blank">뜨거운삼각형</a><br><span class="sub">@뜨거운삼각형</span></td>
+      <td>3.62K</td>
+      <td><span class="diff easy">쉬움</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">개그맨 토크쇼. 매회 게스트</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@Alexandershowkorea" target="_blank">알렉산더 쇼</a><br><span class="sub">@Alexandershowkorea</span></td>
+      <td>수천</td>
+      <td><span class="diff easy">쉬움</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">알렉산더 곤잘레스. 술+코미디 토크</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@문천식매겨드립니다" target="_blank">문천식의 매겨드립니다</a><br><span class="sub">@문천식매겨드립니다</span></td>
+      <td>869</td>
+      <td><span class="diff easy">쉬움</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">전통술+게스트 인생 토크</td>
+    </tr><tr class="cat-header"><td colspan="5"><strong>연애</strong> <span class="cnt">7개</span></td></tr><tr class="">
+      <td><a href="https://youtube.com/@GABEEGIRL" target="_blank">가비 걸 퀸즈나잇</a><br><span class="sub">@GABEEGIRL</span></td>
+      <td>98.5만</td>
+      <td><span class="diff hard">높음</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">사연 토크. 연애/일상 고민</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@엠장기획" target="_blank">엠장기획 잡스러운연애</a><br><span class="sub">@엠장기획</span></td>
+      <td>67.2만</td>
+      <td><span class="diff mid">중간</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">연애/결혼 토크쇼</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@hongcha_._" target="_blank">홍차 HONGCHA</a><br><span class="sub">@hongcha_._</span></td>
+      <td>17만</td>
+      <td><span class="diff mid">중간</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">연애 초보 토크/상담</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@jaehyung.seseung" target="_blank">재형이 동생 세승이</a><br><span class="sub">@jaehyung.seseung</span></td>
+      <td>13만</td>
+      <td><span class="diff mid">중간</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">남매 유튜버. 20대 연애 토크</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@okiki_okk" target="_blank">오키키 아무튼떠들러왔는데</a><br><span class="sub">@okiki_okk</span></td>
+      <td>10.4만</td>
+      <td><span class="diff mid">중간</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">리얼리티 출연자 게스트 다수</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@두말하면잔소리" target="_blank">두말하면 잔소리</a><br><span class="sub">@두말하면잔소리</span></td>
+      <td>3.81만</td>
+      <td><span class="diff mid">중간</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">30대 여성 수다. 게스트편 조회수 높음</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@siiiido" target="_blank">오케이 팟캐스트</a><br><span class="sub">@siiiido</span></td>
+      <td>3.16K</td>
+      <td><span class="diff easy">쉬움</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">연애/썸 전문 시즌2</td>
+    </tr><tr class="cat-header"><td colspan="5"><strong>인터뷰</strong> <span class="cnt">8개</span></td></tr><tr class="">
+      <td><a href="https://youtube.com/@tamgulife" target="_blank">탐구생활</a><br><span class="sub">@tamgulife</span></td>
+      <td>55.2만</td>
+      <td><span class="diff hard">높음</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">독특한 직업/인생 인터뷰</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@oOo_blahblah" target="_blank">입만열면 트루만쇼</a><br><span class="sub">@oOo_blahblah</span></td>
+      <td>3.96만</td>
+      <td><span class="diff mid">중간</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">유명인/크리에이터 게스트 토크</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@인생탐구생활-u6d" target="_blank">인생탐구생활</a><br><span class="sub">@인생탐구생활-u6d</span></td>
+      <td>7.9만</td>
+      <td><span class="diff mid">중간</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">다양한 직업/인생 스토리</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@zaksimpodcast" target="_blank">작심 팟캐스트</a><br><span class="sub">@zaksimpodcast</span></td>
+      <td>7.29만</td>
+      <td><span class="diff mid">중간</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">진로/창업/크리에이터 인터뷰</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@퇴사한동동주" target="_blank">퇴사한 동동주</a><br><span class="sub">@퇴사한동동주</span></td>
+      <td>1.82만</td>
+      <td><span class="diff mid">중간</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">퇴사 PD. 연예인 게스트 팟캐</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@수상한팟캐스트" target="_blank">수상한팟캐스트</a><br><span class="sub">@수상한팟캐스트</span></td>
+      <td>4,260</td>
+      <td><span class="diff easy">쉬움</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">크리에이터/IT 인터뷰</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@WORKERSHIGHCLUB" target="_blank">WORKERS' HIGH</a><br><span class="sub">@WORKERSHIGHCLUB</span></td>
+      <td>7.66K</td>
+      <td><span class="diff easy">쉬움</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">커리어 인터뷰 팟캐스트</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@studioDRMR" target="_blank">두루마리 스튜디오 웃사방</a><br><span class="sub">@studioDRMR</span></td>
+      <td>1.61K</td>
+      <td><span class="diff easy">쉬움</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">커리어 뒤 이야기. 인플루언서 게스트</td>
+    </tr><tr class="cat-header"><td colspan="5"><strong>라이프</strong> <span class="cnt">3개</span></td></tr><tr class="">
+      <td><a href="https://youtube.com/@낯박살" target="_blank">낯박살 스튜디오</a><br><span class="sub">@낯박살</span></td>
+      <td>6.43만</td>
+      <td><span class="diff mid">중간</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">고민상담 라이브+문화 주2회</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@cassiopeiabook" target="_blank">카시오페아출판사</a><br><span class="sub">@cassiopeiabook</span></td>
+      <td>2.95만</td>
+      <td><span class="diff mid">중간</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">낮술 토크. 인생/커리어</td>
+    </tr><tr class="">
+      <td><a href="https://youtube.com/@ContentsPodcast" target="_blank">주힘찬의 유튜브 팟캐스트</a><br><span class="sub">@ContentsPodcast</span></td>
+      <td>6.47K</td>
+      <td><span class="diff easy">쉬움</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">유튜브 컨설팅. 크리에이터 게스트</td>
+    </tr><tr class="cat-header"><td colspan="5"><strong>기타</strong> <span class="cnt">1개</span></td></tr><tr class="">
+      <td><a href="https://youtube.com/@agaleeallseeda" target="_blank">아가리 올시다</a><br><span class="sub">@agaleeallseeda</span></td>
+      <td>2.01K</td>
+      <td><span class="diff easy">쉬움</span></td>
+      <td><span class="status s-후보">후보</span></td>
+      <td class="sub">솔직한 토크 팟캐스트. 총 조회 122만</td>
+    </tr></tbody>
+</table>
+
+</div>
+<footer>ENT Management · Built 2026-04-05</footer>
+</body>
+</html>
