@@ -15,7 +15,7 @@ mkdirSync(DIST, { recursive: true });
 const today = new Date().toISOString().split('T')[0];
 
 // Data
-const channels = db.prepare(`SELECT * FROM channels WHERE status != '제외' ORDER BY
+const channels = db.prepare(`SELECT * FROM channels WHERE status NOT IN ('제외','출연불가') AND is_podcast = 1 ORDER BY
   CASE status WHEN '확정' THEN 1 WHEN '응답' THEN 2 WHEN '컨택중' THEN 3 WHEN '후보' THEN 4 WHEN '보류' THEN 5 END, cat`).all();
 const coverage = db.prepare(`SELECT * FROM coverage ORDER BY pct`).all();
 const schedule = db.prepare(`SELECT s.*, c.name as channel_name, c.handle FROM schedule s LEFT JOIN channels c ON c.id = s.channel_id WHERE s.status != '취소' ORDER BY s.date`).all();

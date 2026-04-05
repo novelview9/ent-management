@@ -61,7 +61,7 @@ app.post('/api/channels', async (c) => {
 app.put('/api/channels/:handle', async (c) => {
   const handle = decodeURIComponent(c.req.param('handle'));
   const u = await c.req.json();
-  const allowed = ['name','status','cat','diff','email','insta','note','fit_score','subs','avg_views','last_upload','guest_frequency','url'];
+  const allowed = ['name','status','cat','diff','email','insta','note','fit_score','subs','avg_views','last_upload','guest_frequency','url','is_podcast'];
   const sets = Object.entries(u).filter(([k]) => allowed.includes(k)).map(([k, v]) => `${k} = '${String(v).replace(/'/g, "''")}'`);
   if (!sets.length) return c.json({ error: 'no valid fields' }, 400);
   sets.push(`updated_at = datetime('now')`);
@@ -289,25 +289,38 @@ app.get('/channels', (c) => {
   const status = c.req.query('status') || '';
   const cat = c.req.query('cat') || '';
   const q = c.req.query('q') || '';
+  const podcast = c.req.query('podcast');
   let where = ["status NOT IN ('제외','출연불가')"];
+  if (podcast === '0') where.push(`is_podcast = 0`);
+  else if (podcast !== 'all') where.push(`is_podcast = 1`);
   if (status) where.push(`status = '${status}'`);
   if (cat) where.push(`cat = '${cat}'`);
   if (q) where.push(`(name LIKE '%${q}%' OR handle LIKE '%${q}%' OR note LIKE '%${q}%')`);
   const rows = db.prepare(`SELECT * FROM channels WHERE ${where.join(' AND ')} ORDER BY fit_score DESC, added_at DESC`).all();
-  const allCats = db.prepare(`SELECT DISTINCT cat FROM channels WHERE status NOT IN ('제외','출연불가') ORDER BY cat`).all().map(r => r.cat);
+  const allCats = db.prepare(`SELECT DISTINCT cat FROM channels WHERE status NOT IN ('제외','출연불가') AND is_podcast = 1 ORDER BY cat`).all().map(r => r.cat);
+  const nonPodcastCnt = db.prepare(`SELECT COUNT(*) as n FROM channels WHERE status NOT IN ('제외','출연불가') AND is_podcast = 0`).get().n;
 
   const qs = (k, v) => {
     const p = new URLSearchParams();
     if (k !== 'status' && status) p.set('status', status);
     if (k !== 'cat' && cat) p.set('cat', cat);
+    if (k !== 'podcast' && podcast && podcast !== undefined) p.set('podcast', podcast);
     if (k === 'status' && v) p.set('status', v);
     if (k === 'cat' && v) p.set('cat', v);
+    if (k === 'podcast') p.set('podcast', v);
     return '/channels' + (p.toString() ? '?' + p : '');
   };
 
   let h = '';
   h += '<div class="flex-between mb8"><h2>채널 목록 (' + rows.length + ')</h2>';
   h += `<form action="/channels" method="get" class="flex"><input name="q" class="inline" placeholder="검색..." value="${q}" style="width:160px"><button class="btn btn-dark" type="submit">검색</button></form></div>`;
+
+  // 팟캐스트/비팟캐 탭
+  h += '<div class="tabs">';
+  h += `<a href="${qs('podcast','')}" class="${!podcast || podcast === '' ? 'on' : ''}">팟캐스트만</a>`;
+  h += `<a href="${qs('podcast','all')}" class="${podcast === 'all' ? 'on' : ''}">전체</a>`;
+  if (nonPodcastCnt) h += `<a href="${qs('podcast','0')}" class="${podcast === '0' ? 'on' : ''}">비팟캐 (${nonPodcastCnt})</a>`;
+  h += '</div>';
 
   // 상태 탭
   h += '<div class="tabs">';
@@ -366,10 +379,11 @@ app.get('/channels/:handle', (c) => {
 <tr><td class="sub">구독자</td><td><input name="subs" class="inline" value="${ch.subs || ''}"></td></tr>
 <tr><td class="sub">평균조회</td><td><input name="avg_views" class="inline" value="${ch.avg_views || ''}"></td></tr>
 <tr><td class="sub">난이도</td><td><select name="diff" class="inline">${['쉬움','중간','높음'].map(d => `<option${d===ch.diff?' selected':''}>${d}</option>`).join('')}</select></td></tr>
-<tr><td class="sub">상태</td><td><select name="status" class="inline">${['후보','컨택중','응답','확정','보류','제외'].map(s => `<option${s===ch.status?' selected':''}>${s}</option>`).join('')}</select></td></tr>
+<tr><td class="sub">상태</td><td><select name="status" class="inline">${['후보','컨택중','응답','확정','보류','출연불가','제외'].map(s => `<option${s===ch.status?' selected':''}>${s}</option>`).join('')}</select></td></tr>
 <tr><td class="sub">핏 스코어</td><td><select name="fit_score" class="inline">${[0,1,2,3,4,5,6,7,8,9,10].map(n => `<option${n===ch.fit_score?' selected':''}>${n}</option>`).join('')}</select> /10</td></tr>
 <tr><td class="sub">이메일</td><td><input name="email" class="inline" value="${ch.email || ''}"></td></tr>
 <tr><td class="sub">인스타</td><td><input name="insta" class="inline" value="${ch.insta || ''}"></td></tr>
+<tr><td class="sub">팟캐스트</td><td><select name="is_podcast" class="inline"><option value="1"${ch.is_podcast ? ' selected' : ''}>팟캐스트</option><option value="0"${!ch.is_podcast ? ' selected' : ''}>비팟캐</option></select></td></tr>
 </table>
 <div class="mt8"><label class="sub">메모</label><textarea name="note" class="inline" rows="2">${ch.note || ''}</textarea></div>
 <div class="mt8"><button class="btn btn-dark" type="submit">저장</button></div>
@@ -412,7 +426,7 @@ app.get('/channels/:handle', (c) => {
 app.post('/channels/:handle/update', async (c) => {
   const handle = decodeURIComponent(c.req.param('handle'));
   const body = await c.req.parseBody();
-  const allowed = ['cat','subs','avg_views','diff','status','fit_score','email','insta','note'];
+  const allowed = ['cat','subs','avg_views','diff','status','fit_score','email','insta','note','is_podcast'];
   const sets = allowed.filter(k => body[k] !== undefined).map(k => `${k} = '${String(body[k]).replace(/'/g, "''")}'`);
   sets.push(`updated_at = datetime('now')`);
   db.prepare(`UPDATE channels SET ${sets.join(', ')} WHERE handle = ?`).run(handle);
