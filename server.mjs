@@ -215,6 +215,7 @@ const layout = (title, body, activePath = '/') => `<!DOCTYPE html><html lang="ko
 <a href="/channels" class="${activePath === '/channels' ? 'active' : ''}">채널</a>
 <a href="/outreach" class="${activePath === '/outreach' ? 'active' : ''}">아웃리치</a>
 <a href="/schedule" class="${activePath === '/schedule' ? 'active' : ''}">스케줄</a>
+<a href="/messages" class="${activePath === '/messages' ? 'active' : ''}">메시지</a>
 <a href="/research" class="${activePath === '/research' ? 'active' : ''}">리서치</a>
 </nav>
 <div class="wrap">${body}</div>
@@ -438,15 +439,28 @@ app.get('/channels/:handle/contact-form', (c) => {
   const handle = decodeURIComponent(c.req.param('handle'));
   const ch = db.prepare(`SELECT * FROM channels WHERE handle = ?`).get(handle);
   if (!ch) return c.redirect('/channels');
+  const templates = db.prepare(`SELECT * FROM templates ORDER BY id`).all();
+  const matched = templates.find(t => t.target === 'all' || t.target.split(',').includes(ch.cat)) || templates[0];
 
   let h = `<h2>${ch.name} 컨택</h2>`;
+  // 연락처 표시
+  if (ch.insta || ch.email) {
+    h += '<div class="card" style="padding:10px 16px"><div class="flex">';
+    if (ch.insta) h += `<a href="https://instagram.com/${ch.insta.replace('@','')}" target="_blank" class="btn btn-gray">인스타 ${ch.insta}</a>`;
+    if (ch.email) h += `<a href="mailto:${ch.email}" class="btn btn-gray">이메일 ${ch.email}</a>`;
+    h += '</div></div>';
+  }
   h += `<div class="card"><form method="post" action="/channels/${encodeURIComponent(handle)}/contact-submit">`;
   h += `<table>
-<tr><td class="sub">유형</td><td><select name="type" class="inline"><option>email</option><option>dm</option><option>댓글</option><option>기타</option></select></td></tr>
-<tr><td class="sub">제목</td><td><input name="subject" class="inline" value="게스트 출연 제안"></td></tr>
+<tr><td class="sub">유형</td><td><select name="type" class="inline"><option${!ch.email ? ' selected' : ''}>dm</option><option${ch.email ? ' selected' : ''}>email</option><option>댓글</option><option>기타</option></select></td></tr>
+<tr><td class="sub">제목</td><td><input name="subject" class="inline" value="게스트 출��� 제안"></td></tr>
+<tr><td class="sub">템플릿</td><td><select class="inline" onchange="document.getElementById('msg').value=this.value">
+<option value="">직접 입력</option>
+${templates.map(t => `<option value="${t.message.replace(/"/g, '&quot;')}"${t.id === matched?.id ? ' selected' : ''}>${t.name} (${t.target})</option>`).join('')}
+</select></td></tr>
 </table>`;
-  h += `<div class="mt8"><label class="sub">메시지</label><textarea name="message" class="inline" rows="5" placeholder="보낸 메시지 내용..."></textarea></div>`;
-  h += `<div class="mt8"><button class="btn btn-blue" type="submit">컨택 기록</button> <a href="/channels/${encodeURIComponent(handle)}" class="btn btn-gray">취소</a></div>`;
+  h += `<div class="mt8"><label class="sub">메시지</label><textarea id="msg" name="message" class="inline" rows="12">${matched ? matched.message : ''}</textarea></div>`;
+  h += `<div class="mt8"><button class="btn btn-blue" type="submit">컨�� 기록</button> <a href="/channels/${encodeURIComponent(handle)}" class="btn btn-gray">취소</a></div>`;
   h += '</form></div>';
   return c.html(layout('컨택', h, '/channels'));
 });
@@ -563,6 +577,98 @@ app.get('/research', (c) => {
   h += '</tbody></table>';
 
   return c.html(layout('리서치', h, '/research'));
+});
+
+// ---------- 메시지 ----------
+app.get('/messages', (c) => {
+  const templates = db.prepare(`SELECT * FROM templates ORDER BY id`).all();
+  const flash = c.req.query('flash');
+
+  let h = '';
+  if (flash) h += `<div class="flash">${flash}</div>`;
+  h += '<div class="flex-between mb8"><h2>메시지 템플릿</h2><a href="/messages/new" class="btn btn-dark">+ 추가</a></div>';
+
+  templates.forEach(t => {
+    h += `<div class="card">
+<div class="flex-between">
+  <h3>${t.name}</h3>
+  <div class="flex">
+    <span class="sub">${t.target === 'all' ? '전체' : t.target}</span>
+    <a href="/messages/${t.id}/edit" class="btn btn-gray">수정</a>
+    <a href="/messages/${t.id}/copy" class="btn btn-blue">복사</a>
+  </div>
+</div>
+<pre style="margin-top:8px;font-size:12px;line-height:1.6;white-space:pre-wrap;background:#fafafa;padding:12px;border-radius:6px;border:1px solid #eee;font-family:inherit">${t.message}</pre>
+</div>`;
+  });
+
+  return c.html(layout('메시지', h, '/messages'));
+});
+
+app.get('/messages/new', (c) => {
+  let h = '<h2>메시지 추가</h2><div class="card"><form method="post" action="/messages/create">';
+  h += `<table>
+<tr><td class="sub">이름</td><td><input name="name" class="inline" required placeholder="D. 새 템플릿"></td></tr>
+<tr><td class="sub">대상</td><td><input name="target" class="inline" value="all" placeholder="all 또는 패션,코미디"></td></tr>
+</table>`;
+  h += `<div class="mt8"><label class="sub">메시지</label><textarea name="message" class="inline" rows="12" required></textarea></div>`;
+  h += '<div class="mt8"><button class="btn btn-dark" type="submit">저장</button> <a href="/messages" class="btn btn-gray">취소</a></div></form></div>';
+  return c.html(layout('메시지 추가', h, '/messages'));
+});
+
+app.post('/messages/create', async (c) => {
+  const b = await c.req.parseBody();
+  db.prepare(`INSERT INTO templates (name, target, message) VALUES (?, ?, ?)`).run(b.name, b.target || 'all', b.message);
+  return c.redirect('/messages?flash=추가 완료');
+});
+
+app.get('/messages/:id/edit', (c) => {
+  const t = db.prepare(`SELECT * FROM templates WHERE id = ?`).get(c.req.param('id'));
+  if (!t) return c.redirect('/messages');
+  let h = `<h2>${t.name} 수정</h2><div class="card"><form method="post" action="/messages/${t.id}/update">`;
+  h += `<table>
+<tr><td class="sub">이름</td><td><input name="name" class="inline" value="${t.name}" required></td></tr>
+<tr><td class="sub">대상</td><td><input name="target" class="inline" value="${t.target}"></td></tr>
+</table>`;
+  h += `<div class="mt8"><label class="sub">메시지</label><textarea name="message" class="inline" rows="12" required>${t.message}</textarea></div>`;
+  h += `<div class="mt8"><button class="btn btn-dark" type="submit">저장</button> <a href="/messages" class="btn btn-gray">취소</a>
+  <a href="/messages/${t.id}/delete" class="btn btn-red" style="margin-left:auto" onclick="return confirm('삭제할까요?')">삭제</a></div></form></div>`;
+  return c.html(layout('메시지 수정', h, '/messages'));
+});
+
+app.post('/messages/:id/update', async (c) => {
+  const b = await c.req.parseBody();
+  db.prepare(`UPDATE templates SET name = ?, target = ?, message = ?, updated_at = datetime('now') WHERE id = ?`).run(b.name, b.target, b.message, c.req.param('id'));
+  return c.redirect('/messages?flash=수정 완료');
+});
+
+app.get('/messages/:id/delete', (c) => {
+  db.prepare(`DELETE FROM templates WHERE id = ?`).run(c.req.param('id'));
+  return c.redirect('/messages?flash=삭제 완료');
+});
+
+app.get('/messages/:id/copy', (c) => {
+  const t = db.prepare(`SELECT * FROM templates WHERE id = ?`).get(c.req.param('id'));
+  if (!t) return c.redirect('/messages');
+  return c.html(layout('메시지 복사', `
+<h2>${t.name}</h2>
+<div class="card">
+<div class="sub mb8">대상: ${t.target === 'all' ? '전체' : t.target}</div>
+<textarea class="inline" rows="14" style="font-size:13px;line-height:1.6" onclick="this.select()" readonly>${t.message}</textarea>
+<div class="mt8 sub">텍스트 클릭하면 전체 선택됩니다. Ctrl+C / Cmd+C로 복사하세요.</div>
+</div>
+<div class="mt8"><a href="/messages" class="btn btn-gray">돌아가기</a></div>
+`, '/messages'));
+});
+
+// API
+app.get('/api/templates', (c) => {
+  return c.json(db.prepare(`SELECT * FROM templates ORDER BY id`).all());
+});
+
+app.get('/api/templates/:id', (c) => {
+  const t = db.prepare(`SELECT * FROM templates WHERE id = ?`).get(c.req.param('id'));
+  return t ? c.json(t) : c.json({ error: 'not found' }, 404);
 });
 
 // ===================== Start =====================
