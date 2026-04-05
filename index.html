@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>팟캐스트 리서치</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f5;color:#222;line-height:1.5;-webkit-text-size-adjust:100%}
+
+header{background:#fff;padding:16px;border-bottom:1px solid #e0e0e0;position:sticky;top:0;z-index:20}
+header h1{font-size:17px;font-weight:700}
+.hrow{display:flex;justify-content:space-between;align-items:center}
+.hrow small{font-size:11px;color:#999}
+.dash{display:flex;gap:10px;margin-top:8px;font-size:12px;color:#666;flex-wrap:wrap}
+.dash b{color:#222}
+.dash .sep{color:#ddd}
+
+.cov-section{background:#fff;padding:12px 16px;border-bottom:1px solid #eee}
+.cov-title{font-size:12px;font-weight:600;color:#666;margin-bottom:8px}
+.cov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:6px}
+.cov-item{font-size:11px;color:#555}
+.cov-item .label{display:flex;justify-content:space-between;margin-bottom:2px}
+.cov-bar{height:4px;background:#eee;border-radius:2px;overflow:hidden}
+.cov-fill{height:100%;border-radius:2px;transition:.3s}
+
+.filters{display:flex;gap:6px;padding:10px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch;background:#fff;border-bottom:1px solid #eee;position:sticky;top:55px;z-index:15}
+.filters::-webkit-scrollbar{display:none}
+.fb{flex-shrink:0;padding:5px 12px;border-radius:16px;border:1px solid #ddd;background:#fff;color:#666;font-size:12px;cursor:pointer;white-space:nowrap;transition:.15s}
+.fb.on{background:#111;color:#fff;border-color:#111}
+
+.wrap{max-width:720px;margin:0 auto;padding:8px 12px 40px}
+.sec-head{display:flex;justify-content:space-between;align-items:center;padding:16px 0 8px}
+.sec-head h2{font-size:14px;font-weight:700;color:#333}
+.sec-head span{font-size:11px;color:#999}
+
+.row{background:#fff;border-radius:10px;padding:14px;margin-bottom:8px;border:1px solid #eee;transition:.15s}
+.row:active{background:#f8f8f8}
+.row-top{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.ch-name{font-size:14px;font-weight:600}
+.ch-name a{color:#111;text-decoration:none}
+.ch-handle{font-size:11px;color:#aaa;margin-top:1px}
+.ch-desc{font-size:12px;color:#777;margin-top:6px}
+.ch-meta{font-size:10px;color:#bbb;margin-top:4px}
+
+.tags{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px}
+.tag{font-size:10px;padding:2px 7px;border-radius:4px;font-weight:500}
+.t-sub{background:#f0f0f0;color:#555}
+.t-avg{background:#e8f5e9;color:#2e7d32}
+.t-cat{background:#e3f2fd;color:#1565c0}
+.t-via{background:#f3e5f5;color:#7b1fa2}
+.t-new{background:#fff3e0;color:#e65100}
+
+.diff{font-size:10px;font-weight:600;padding:3px 7px;border-radius:4px;white-space:nowrap}
+.d-e{background:#e8f5e9;color:#2e7d32}
+.d-m{background:#fff3e0;color:#e65100}
+.d-h{background:#fce4ec;color:#c62828}
+
+.contacts{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px}
+.contacts a,.contacts span{font-size:11px;padding:4px 10px;border-radius:6px;text-decoration:none;display:inline-block}
+.ct-email{background:#e3f2fd;color:#1565c0}
+.ct-insta{background:#fce4ec;color:#c2185b}
+.ct-link{background:#e8f5e9;color:#2e7d32}
+
+.st{font-size:10px;font-weight:600;padding:2px 6px;border-radius:3px}
+.st-후보{background:#e3f2fd;color:#1565c0}
+.st-컨택중{background:#fff3e0;color:#e65100}
+.st-응답{background:#e8f5e9;color:#2e7d32}
+.st-확정{background:#2e7d32;color:#fff}
+.st-제외{background:#f5f5f5;color:#bbb}
+
+.excluded .ch-name a,.excluded .ch-desc,.excluded .ch-handle{color:#ccc}
+.excluded{border-color:#f0f0f0;opacity:.45}
+
+.empty{text-align:center;padding:40px;color:#aaa;font-size:13px}
+
+footer{text-align:center;padding:24px;font-size:11px;color:#bbb}
+@media(min-width:700px){.wrap{max-width:800px}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hrow"><h1>팟캐스트 출연 리서치</h1><small id="updated"></small></div>
+  <div class="dash" id="dash"></div>
+</header>
+
+<div class="cov-section" id="covSection"></div>
+
+<div class="filters" id="filters"></div>
+
+<div class="wrap" id="app"></div>
+
+<footer>data.json + research-log.json 기반 · 채널 추가시 JSON만 수정</footer>
+
+<script>
+let DATA=null, LOG=null;
+let currentFilter='후보';
+
+async function init(){
+  const [d,l]=await Promise.all([
+    fetch('data.json?t='+Date.now()).then(r=>r.json()),
+    fetch('research-log.json?t='+Date.now()).then(r=>r.json()).catch(()=>null)
+  ]);
+  DATA=d; LOG=l;
+  document.getElementById('updated').textContent=DATA.meta.updated;
+  renderDash();
+  renderCoverage();
+  renderFilters();
+  render();
+}
+
+function renderDash(){
+  const ch=DATA.channels;
+  const s=(st)=>ch.filter(c=>c.status===st).length;
+  const el=document.getElementById('dash');
+  el.innerHTML=`
+    <span>후보 <b>${s('후보')}</b></span><span class="sep">|</span>
+    <span>컨택중 <b>${s('컨택중')}</b></span><span class="sep">|</span>
+    <span>응답 <b>${s('응답')}</b></span><span class="sep">|</span>
+    <span>확정 <b>${s('확정')}</b></span><span class="sep">|</span>
+    <span>제외 <b>${s('제외')}</b></span><span class="sep">|</span>
+    <span>전체 <b>${ch.length}</b></span>
+    ${LOG?`<span class="sep">|</span><span>리서치 <b>${LOG.sessions.length}</b>회</span>`:''}
+  `;
+}
+
+function renderCoverage(){
+  if(!LOG||!LOG.coverageMap)return;
+  const el=document.getElementById('covSection');
+  const cm=LOG.coverageMap;
+  const cats=Object.keys(cm);
+  let html='<div class="cov-title">카테고리별 리서치 커버리지</div><div class="cov-grid">';
+  cats.forEach(cat=>{
+    const c=cm[cat];
+    const pct=parseInt(c.coverage)||0;
+    const color=pct>=60?'#4caf50':pct>=30?'#ff9800':'#f44336';
+    html+=`<div class="cov-item"><div class="label"><span>${cat}</span><span>${c.coverage}</span></div><div class="cov-bar"><div class="cov-fill" style="width:${pct}%;background:${color}"></div></div></div>`;
+  });
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+function renderFilters(){
+  const tabs=['후보','전체','최근추가','패션','힙합','스트릿','코미디','연애','인터뷰','라이프','기타','제외'];
+  const el=document.getElementById('filters');
+  el.innerHTML=tabs.map(c=>`<button class="fb${c===currentFilter?' on':''}" onclick="setFilter('${c}',this)">${c}</button>`).join('');
+}
+
+function setFilter(c,el){
+  currentFilter=c;
+  document.querySelectorAll('.fb').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  render();
+}
+
+function isRecent(d){
+  if(!d)return false;
+  const diff=Date.now()-new Date(d).getTime();
+  return diff<7*24*60*60*1000;
+}
+
+function render(){
+  const app=document.getElementById('app');
+  let ch=DATA.channels;
+
+  if(currentFilter==='전체') ch=ch.filter(c=>c.status!=='제외');
+  else if(currentFilter==='후보') ch=ch.filter(c=>c.status==='후보');
+  else if(currentFilter==='제외') ch=ch.filter(c=>c.status==='제외');
+  else if(currentFilter==='최근추가') ch=ch.filter(c=>c.status!=='제외'&&isRecent(c.added));
+  else if(['컨택중','응답','확정'].includes(currentFilter)) ch=ch.filter(c=>c.status===currentFilter);
+  else ch=ch.filter(c=>c.cat===currentFilter&&c.status!=='제외');
+
+  const groups={};
+  ch.forEach(c=>{if(!groups[c.cat])groups[c.cat]=[];groups[c.cat].push(c);});
+
+  let html='';
+  const order=['패션','힙합','스트릿','코미디','연애','인터뷰','라이프','기타'];
+  order.forEach(cat=>{
+    if(!groups[cat])return;
+    const items=groups[cat];
+    html+=`<div class="sec-head"><h2>${cat}</h2><span>${items.length}개</span></div>`;
+    items.forEach(c=>{
+      const isEx=c.status==='제외';
+      const isNew=isRecent(c.added);
+      html+=`<div class="row${isEx?' excluded':''}">`;
+      html+=`<div class="row-top"><div>`;
+      html+=`<div class="ch-name"><a href="${c.url}" target="_blank">${c.name}</a></div>`;
+      html+=`<div class="ch-handle">${c.handle}</div>`;
+      html+=`</div>`;
+      html+=`<span class="diff d-${c.diff==='쉬움'?'e':c.diff==='중간'?'m':'h'}">${c.diff}</span>`;
+      html+=`</div>`;
+      if(c.note)html+=`<div class="ch-desc">${c.note}</div>`;
+      html+=`<div class="tags">`;
+      html+=`<span class="tag t-sub">구독 ${c.subs}</span>`;
+      if(c.avg&&c.avg!=='-')html+=`<span class="tag t-avg">평균 ${c.avg}</span>`;
+      html+=`<span class="tag t-cat">${c.cat}</span>`;
+      html+=`<span class="st st-${c.status}">${c.status}</span>`;
+      if(c.discoveredVia&&c.discoveredVia!=='search')html+=`<span class="tag t-via">${c.discoveredVia}</span>`;
+      if(isNew)html+=`<span class="tag t-new">NEW</span>`;
+      html+=`</div>`;
+      if(c.added||c.discoverySource){
+        html+=`<div class="ch-meta">`;
+        if(c.added)html+=`추가 ${c.added}`;
+        if(c.discoverySource)html+=` · ${c.discoverySource}`;
+        html+=`</div>`;
+      }
+      if(!isEx){
+        html+=`<div class="contacts">`;
+        if(c.email)html+=`<a class="ct-email" href="mailto:${c.email}">${c.email}</a>`;
+        if(c.insta)html+=`<a class="ct-insta" href="https://instagram.com/${c.insta.replace('@','')}" target="_blank">${c.insta}</a>`;
+        if(!c.email&&!c.insta)html+=`<span class="ct-link">채널 문의</span>`;
+        html+=`</div>`;
+      }
+      html+=`</div>`;
+    });
+  });
+
+  if(!ch.length)html='<div class="empty">해당 항목 없음</div>';
+  app.innerHTML=html;
+}
+
+init();
+</script>
+</body>
+</html>

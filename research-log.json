@@ -1,0 +1,122 @@
+{
+  "sessions": [
+    {
+      "id": "2026-04-04-01",
+      "date": "2026-04-04",
+      "strategy": "search",
+      "queries": ["팟캐스트 연애 토크 2026", "연애 팟캐스트 게스트", "패션 토크쇼 유튜브", "크리에이터 인터뷰 팟캐스트", "남자 연애 토크"],
+      "categoriesTargeted": ["연애", "패션", "인터뷰"],
+      "channelsFound": 12,
+      "channelsAdded": 8,
+      "channelHandles": ["@siiiido", "@kkjrhyker", "@hongcha_._", "@okiki_okk", "@zaksimpodcast", "@두말하면잔소리", "@oOo_blahblah", "@superdealtalk"],
+      "notes": "첫 라운드. 연애/패션/인터뷰 중심"
+    },
+    {
+      "id": "2026-04-04-02",
+      "date": "2026-04-04",
+      "strategy": "search",
+      "queries": ["힙합 팟캐스트 게스트", "음악 팟캐스트 인터뷰", "힙합 토크쇼 유튜브", "인디 음악 팟캐스트", "래퍼 인터뷰 팟캐스트", "패션 팟캐스트 게스트 2026", "코미디 팟캐스트 유튜브", "개그맨 토크쇼 게스트", "스트릿 패션 토크"],
+      "categoriesTargeted": ["힙합", "코미디", "패션"],
+      "channelsFound": 18,
+      "channelsAdded": 10,
+      "channelHandles": ["@HIPHOP-PLAYA", "@spns.televison", "@paloaltongue", "@bugokhawa2", "@alexalexalex_ch", "@김건", "@뷰티풀너드", "@B급studio", "@americanjoke0", "@leesangjun_show"],
+      "notes": "힙합/코미디 확장. 대형 채널 다수 포함"
+    },
+    {
+      "id": "2026-04-04-03",
+      "date": "2026-04-04",
+      "strategy": "search",
+      "queries": ["토크쇼 게스트 유튜브 2026", "남자 라이프스타일 팟캐스트", "술 토크 팟캐스트 게스트", "예능 팟캐스트 유튜버", "잡담 팟캐스트 게스트", "30대 남자 토크쇼", "서브컬처 팟캐스트", "트렌드 토크쇼", "MZ세대 팟캐스트"],
+      "categoriesTargeted": ["라이프", "인터뷰", "기타"],
+      "channelsFound": 15,
+      "channelsAdded": 8,
+      "channelHandles": ["@dannychocomedy", "@쩐문가", "@엠장기획", "@tamgulife", "@남자패션", "@WORKERSHIGHCLUB", "@cassiopeiabook", "@jaehyung.seseung"],
+      "notes": "라이프스타일/인터뷰 확장"
+    },
+    {
+      "id": "2026-04-04-04",
+      "date": "2026-04-04",
+      "strategy": "search",
+      "queries": ["패션 팟캐스트", "스트릿 패션 토크쇼", "남자 패션 토크", "패션 유튜버 대담", "패션 브랜드 토크", "패션 인터뷰 유튜브", "패션 트렌드 토크", "옷 팟캐스트", "패션피플 인터뷰", "fashion podcast korea"],
+      "categoriesTargeted": ["패션"],
+      "channelsFound": 10,
+      "channelsAdded": 8,
+      "channelHandles": ["@posty_jb", "@fashionfighting", "@oncuration", "@HOWABOUTOOTD", "@윤대리", "@lighthousestore", "@momohwang", "@Moneygraphy"],
+      "notes": "패션 딥 서치. 편집샵/매거진 기반 채널 발굴"
+    },
+    {
+      "id": "2026-04-04-05",
+      "date": "2026-04-04",
+      "strategy": "search",
+      "queries": ["팟캐스트 게스트 초대", "유튜브 팟캐스트 토크", "팟캐 게스트", "요즘 팟캐스트 추천", "심야 팟캐스트", "술자리 토크 게스트", "문화 팟캐스트 게스트", "팟캐스트 EP 게스트"],
+      "categoriesTargeted": ["코미디", "기타", "인터뷰"],
+      "channelsFound": 20,
+      "channelsAdded": 10,
+      "channelHandles": ["@뜨거운삼각형", "@Alexandershowkorea", "@문천식매겨드립니다", "@sksmsdudzpdl", "@KimsInnpodcasts", "@인생탐구생활-u6d", "@studioDRMR", "@수상한팟캐스트", "@ContentsPodcast", "@원싸이트"],
+      "notes": "장르불문 크리에이터 팟캐 대량 서치"
+    },
+    {
+      "id": "2026-04-04-06",
+      "date": "2026-04-04",
+      "strategy": "search",
+      "queries": ["빨간줄 팟캐스트", "드럼통 팟캐스트", "한국 인기 팟캐스트 유튜브", "유명 팟캐스트 채널", "팟캐스트 추천 2026", "게스트 초대 팟캐스트 인기", "썰 팟캐스트", "핫한 팟캐스트"],
+      "categoriesTargeted": ["스트릿", "코미디", "기타"],
+      "channelsFound": 13,
+      "channelsAdded": 9,
+      "channelHandles": ["@koreaisgay32", "@드럼통프렌즈", "@kimganji666", "@낯박살", "@퇴사한동동주", "@CharlesEnter", "@수상한팟캐스트", "@SANGNAMJA77", "@fightcomedyclub"],
+      "notes": "빨간줄/드럼통 등 유명채널 보완 + 스트릿 카테고리 확장"
+    },
+    {
+      "id": "2026-04-04-07",
+      "date": "2026-04-04",
+      "strategy": "manual",
+      "queries": [],
+      "categoriesTargeted": ["기타", "힙합"],
+      "channelsFound": 3,
+      "channelsAdded": 3,
+      "channelHandles": ["@홍콩참치만두", "@드럼통프렌즈", "@agaleeallseeda"],
+      "notes": "사용자 직접 추가 채널"
+    }
+  ],
+  "coverageMap": {
+    "패션":   { "searchDone": true,  "relatedDone": false, "lastDate": "2026-04-04", "coverage": "70%" },
+    "힙합":   { "searchDone": true,  "relatedDone": false, "lastDate": "2026-04-04", "coverage": "60%" },
+    "스트릿": { "searchDone": true,  "relatedDone": false, "lastDate": "2026-04-04", "coverage": "30%" },
+    "코미디": { "searchDone": true,  "relatedDone": false, "lastDate": "2026-04-04", "coverage": "50%" },
+    "연애":   { "searchDone": true,  "relatedDone": false, "lastDate": "2026-04-04", "coverage": "60%" },
+    "인터뷰": { "searchDone": true,  "relatedDone": false, "lastDate": "2026-04-04", "coverage": "50%" },
+    "라이프": { "searchDone": false, "relatedDone": false, "lastDate": "2026-04-04", "coverage": "20%" },
+    "기타":   { "searchDone": false, "relatedDone": false, "lastDate": "2026-04-04", "coverage": "15%" }
+  },
+  "queryBank": {
+    "used": [
+      "팟캐스트 연애 토크 2026", "연애 팟캐스트 게스트", "패션 토크쇼 유튜브",
+      "크리에이터 인터뷰 팟캐스트", "남자 연애 토크", "힙합 팟캐스트 게스트",
+      "음악 팟캐스트 인터뷰", "힙합 토크쇼 유튜브", "인디 음악 팟캐스트",
+      "래퍼 인터뷰 팟캐스트", "패션 팟캐스트 게스트 2026", "코미디 팟캐스트 유튜브",
+      "개그맨 토크쇼 게스트", "스트릿 패션 토크", "토크쇼 게스트 유튜브 2026",
+      "남자 라이프스타일 팟캐스트", "술 토크 팟캐스트 게스트", "예능 팟캐스트 유튜버",
+      "잡담 팟캐스트 게스트", "30대 남자 토크쇼", "서브컬처 팟캐스트",
+      "트렌드 토크쇼", "MZ세대 팟캐스트", "패션 팟캐스트", "스트릿 패션 토크쇼",
+      "남자 패션 토크", "패션 유튜버 대담", "패션 브랜드 토크", "패션 인터뷰 유튜브",
+      "패션 트렌드 토크", "옷 팟캐스트", "패션피플 인터뷰", "fashion podcast korea",
+      "팟캐스트 게스트 초대", "유튜브 팟캐스트 토크", "팟캐 게스트",
+      "요즘 팟캐스트 추천", "심야 팟캐스트", "술자리 토크 게스트",
+      "문화 팟캐스트 게스트", "팟캐스트 EP 게스트", "빨간줄 팟캐스트",
+      "드럼통 팟캐스트", "한국 인기 팟캐스트 유튜브", "유명 팟캐스트 채널",
+      "팟캐스트 추천 2026", "게스트 초대 팟캐스트 인기", "썰 팟캐스트", "핫한 팟캐스트"
+    ],
+    "planned": [
+      "20대 토크쇼 팟캐스트", "크리에이터 인터뷰 2026", "유튜브 라디오 한국",
+      "한국 스탠드업 코미디 유튜브", "게스트 초대 라디오 유튜브",
+      "일상 브이로그 팟캐스트", "취미 팟캐스트 한국", "독서 팟캐스트 게스트",
+      "여행 팟캐스트 한국 게스트", "먹방 토크 팟캐스트",
+      "맛집 팟캐스트 게스트", "한국 문화 팟캐스트 2026",
+      "아트 팟캐스트 한국", "디자인 팟캐스트 한국",
+      "테크 팟캐스트 한국 게스트", "스타트업 팟캐스트 인터뷰",
+      "운동 팟캐스트 게스트", "자기계발 토크쇼 유튜브",
+      "부부 팟캐스트 한국", "결혼 팟캐스트 게스트",
+      "한국 팟캐스트 신규 2026", "숏폼 크리에이터 인터뷰"
+    ]
+  }
+}
